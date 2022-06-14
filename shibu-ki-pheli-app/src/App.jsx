@@ -8,11 +8,11 @@ import { Tracks } from "./Component/Tracks";
 const App = () => {
   const data = {
     access_token:
-      "BQAvMpcCReQ8i0K2EJ1WGzh7hGRid66auUQomluzdJoRax2_E2CdbB3jUC2dTx7NRdJfzZc7Llg5YgNSF1krKH-d1u1qUja2dmGgeHM5ueO0C94pAEuzVWGUwmdeXcOIx_YhJfB4eCZUK1fuoEAv57gCcaEdwaKhg_hgGDgIuX0RhcRu13vS-ZA7LPqOPYn05pDX-hI5-E5GRBXsDx4a2fKaiqxoLiLEDqtGOHU7QiQ",
+      "xxxxxxxxxxxxxxxxxxx",
     token_type: "Bearer",
     expires_in: 3600,
     refresh_token:
-      "AQDUfvTaI9Xd8BuyzRFfbCq74Iusz1pUhW0yfRr_RYh728iOC1vM4t4AMBEs-O5DB09miT3gJtvLNY2zyX_tfLbQTv3Ry_IthwOol4IVa0pqQkHdYaj1CYPyA7oW2bt64zw",
+      "xxxxxxxxxxxxxxxxxxx",
     scope: "playlist-modify-private",
   };
 
