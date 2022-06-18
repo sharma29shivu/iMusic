@@ -1,55 +1,109 @@
-import React from "react";
+import React, { useState } from "react";
 import artistCard from "./Artist.module.scss";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import { AlertDialog } from "./Logout";
 import playButton from "../images/playButton.png";
+import powerSwitch from "../images/powerButton5.png";
 
 export const Artist = (props) => {
+  const [searchArtist, setSearchArtist] = useState("");
+
+  const { logout } = useAuth();
   const navigate = useNavigate();
+
+  const zip = (a1, a2, a3, a4) => a1.map((x, i) => [x, a2[i], a3[i], a4[i]]);
+  const newArray = zip(
+    props.artists,
+    props.artistImage,
+    props.artistFollowers,
+    props.artistsId
+  );
+  // console.log(newArray);
 
   return (
     <React.Fragment>
+      <div className={artistCard.searchBar}>
+        <input
+          type="text"
+          placeholder="search artists.."
+          onChange={(event) => {
+            setSearchArtist(event.target.value);
+            console.log(searchArtist);
+          }}
+        />
+      </div>
+      <div className={artistCard.power}>
+        <AlertDialog />
+      </div>
+      {/* <div>
+        <img
+          src={powerSwitch}
+          onClick={handleLogout}
+          className={artistCard.power}
+          height="90px"
+        />
+      </div> */}
       <div className={artistCard.output}>
-        {props.artistImage.map((imgUrl, index) => (
-          <div key={index} className={artistCard.artistCard}>
-            <div className={artistCard.playCircle}>
-              <img
-                src={playButton}
-                height="21px"
-                width="21px"
-                onClick={() => {
-                  console.log(props.artistsId[index]);
+        {newArray.length > 0 ? (
+          <>
+            {newArray
+              .filter((val) => {
+                if (searchArtist === "") {
+                  return val;
+                } else if (
+                  val[0].toLowerCase().includes(searchArtist.toLowerCase())
+                ) {
+                  console.log(val[0], val[1], val[2], val[3]);
+                  return val;
+                }
+              })
+              .map((artistName, index) => (
+                <div key={index} className={artistCard.artistCard}>
+                  <div className={artistCard.playCircle}>
+                    <img
+                      src={playButton}
+                      alt=""
+                      height="21px"
+                      width="21px"
+                      onClick={() => {
+                        console.log(props.artistsId[index]);
 
-                  props.sendDataToApp(
-                    props.artistsId[index],
-                    imgUrl,
-                    props.artists[index],
-                    props.artistFollowers[index]
-                  );
-                  navigate("/albums");
-                }}
-              />
-            </div>
-            <img
-              src={imgUrl}
-              alt=""
-              style={{ cursor: "pointer" }}
-              className={artistCard.titleCover}
-              onClick={() => {
-                console.log(props.artistsId[index]);
+                        props.sendDataToApp(
+                          artistName[3],
+                          artistName[1],
+                          artistName[0],
+                          artistName[2]
+                        );
+                        navigate("/albums");
+                      }}
+                    />
+                  </div>
+                  <img
+                    src={artistName[1]}
+                    alt=""
+                    style={{ cursor: "pointer" }}
+                    className={artistCard.titleCover}
+                    onClick={() => {
+                      console.log(props.artistsId[index]);
 
-                props.sendDataToApp(
-                  props.artistsId[index],
-                  imgUrl,
-                  props.artists[index],
-                  props.artistFollowers[index]
-                );
-                navigate("/albums");
-              }}
-            />
+                      props.sendDataToApp(
+                        artistName[3],
+                        artistName[1],
+                        artistName[0],
+                        artistName[2]
+                      );
+                      navigate("/albums");
+                    }}
+                  />
 
-            <div className={artistCard.songTitle}>{props.artists[index]}</div>
-          </div>
-        ))}
+                  <div className={artistCard.songTitle}>{artistName[0]}</div>
+                </div>
+              ))}{" "}
+          </>
+        ) : (
+          " nothing to show"
+        )}
       </div>
     </React.Fragment>
   );
@@ -63,5 +117,5 @@ export const Artist = (props) => {
 
  code=AQDaAVZZ4j2_c6ShLMl9JsQ89PK5-jOlVZUSzROKQVkq9meObL-0oJyWVPA_3AV9_l-s1RJNQYLAkmZQrq6gXdYP_5loeuNHQQOwlwxVqNaJzxcWKxBPu14gJ7FN4YuMLKWPQ2MSW3OlPwgq9-WO-T4YMRrL3K51cSl-93K4AMJ6iuEBD5L-_Yi8ACivR_5UpMd1"
 
- curl -d client_id=219920e764664a3dafb265f5cfc670a8 -d client_secret=c4f7d9f36c8e401ead612876b205f8e4 -d grant_type=authorization_code -d code=AQC6KeulgNGZM2ByfjLKcSuf_dVNcn92UsmUdpP1lXbKm9lVB0VKouKObxfN4LwAh2idc9AfhC7cao_CrvOSDNaBtjtv7FtGP9R16d6FqtpPyg2esA1-OlKMVDTGVG1LYvczGobowbBCg8gjrQmIbGfAE-jqh-mUURQofNKa5ccWqSPNiC8cGrR4mAMzUg5nN8gl -d redirect_uri=https%3A%2F%2Flocalhost%3A3000 https://accounts.spotify.com/api/token
+ curl -d client_id=219920e764664a3dafb265f5cfc670a8 -d client_secret=c4f7d9f36c8e401ead612876b205f8e4 -d grant_type=authorization_code -d code=AQDEYo8ZSrvIY8n48fylTh59aVkbEyBAD8aqdeEb5tHlB3P9egOGFKfY7fKqeWLM_pscsvDKVgbQJeprXvE2XK0AVwJ34lI8Y5e6W2ur9-tLCaswn6tyQRZXxaNKU5cSrimsrZldvDBx1Qh_C8oq4rlDPnIZBSC4-ge7QjLq7CJ4eYfa0thJhwhePH1wBtGnEv27 -d redirect_uri=https%3A%2F%2Flocalhost%3A3000 https://accounts.spotify.com/api/token
 */

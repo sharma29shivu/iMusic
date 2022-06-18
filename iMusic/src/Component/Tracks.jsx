@@ -37,7 +37,7 @@ export const Tracks = (props) => {
                 navigate("/albums");
               }}
             >
-              <img src={backArrow} />
+              <img src={backArrow} alt="" />
             </button>
           </div>
           <div style={{ opacity: "0", pointerEvents: "none" }}>
@@ -49,6 +49,7 @@ export const Tracks = (props) => {
                 src={props.songArt}
                 height="300px"
                 width="300px"
+                alt=""
                 // style={{ border: "2px solid green" }}
               />
               <div className={tracksCard.albumName}>

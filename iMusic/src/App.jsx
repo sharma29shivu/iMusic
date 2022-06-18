@@ -4,15 +4,18 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Artist } from "./Component/Artist";
 import { Albums } from "./Component/Albums";
 import { Tracks } from "./Component/Tracks";
+import { LandingPage } from "./Component/LandingPage";
+import { AuthProvider } from "./context/AuthContext";
+import { PrivateRoute } from "./privateRoute/PrivateRoute";
 
 const App = () => {
   const data = {
     access_token:
-      "BQAvMpcCReQ8i0K2EJ1WGzh7hGRid66auUQomluzdJoRax2_E2CdbB3jUC2dTx7NRdJfzZc7Llg5YgNSF1krKH-d1u1qUja2dmGgeHM5ueO0C94pAEuzVWGUwmdeXcOIx_YhJfB4eCZUK1fuoEAv57gCcaEdwaKhg_hgGDgIuX0RhcRu13vS-ZA7LPqOPYn05pDX-hI5-E5GRBXsDx4a2fKaiqxoLiLEDqtGOHU7QiQ",
+      "BQC47la1mQeZv0-i127CPWWkwCQxLh6wyMv7CFn7_A8PpA-1m0uBCyW7VKcAWizSfRnEKIwHRR0oc4HWJF-bLz3A6VDIO30EbR6w27_FmHDEASDZUtHD-L4ZwyAZWfBo3LAVOEjVhAwZhSmuUIf542rRRCeqRdXVuYHfSZ0blYKE_fnh88hAV4aWJRi2Li5aVCrzRi35KlQzR3glWOsLSxNs5nJmWDRU8XOpvyjWv4E",
     token_type: "Bearer",
     expires_in: 3600,
     refresh_token:
-      "AQDUfvTaI9Xd8BuyzRFfbCq74Iusz1pUhW0yfRr_RYh728iOC1vM4t4AMBEs-O5DB09miT3gJtvLNY2zyX_tfLbQTv3Ry_IthwOol4IVa0pqQkHdYaj1CYPyA7oW2bt64zw",
+      "AQDptI_xahngr4_UKIrNoEc8V8GFtBb1VndgSK4g2_NPEX4AWUYaZFUqHcc2VFxVVwSvqvmEuNbl3tEYKADjeFD0MFwASqONOUNbOdYrECC1P_dNdJK9K5379iplXVpAz9E",
     scope: "playlist-modify-private",
   };
 
@@ -231,15 +234,13 @@ const App = () => {
   };
 
   const msToTime = (duration) => {
-    var seconds = Math.floor((duration / 1000) % 60),
-      minutes = Math.floor((duration / (1000 * 60)) % 60),
+    var minutes = Math.floor((duration / (1000 * 60)) % 60),
       hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
 
     hours = hours < 10 ? "0" + hours : hours;
     minutes = minutes < 10 ? "0" + minutes : minutes;
-    seconds = seconds < 10 ? "0" + seconds : seconds;
 
-    if (hours == "00") {
+    if (hours === "00") {
       return minutes + " minutes";
     } else {
       return hours + " hours " + minutes + " minutes ";
@@ -249,48 +250,52 @@ const App = () => {
   return (
     <React.Fragment>
       <Router>
-        <Routes>
-          <Route
-            exact
-            path="/"
-            element={
-              <Artist
-                artists={artist}
-                artistImage={images}
-                artistsId={id}
-                artistFollowers={followers}
-                sendDataToApp={getDataFromArtist}
+        <AuthProvider>
+          <Routes>
+            <Route exact path="/" element={<LandingPage />} />
+            <Route element={<PrivateRoute />}>
+              <Route
+                path="/artist"
+                element={
+                  <Artist
+                    artists={artist}
+                    artistImage={images}
+                    artistsId={id}
+                    artistFollowers={followers}
+                    sendDataToApp={getDataFromArtist}
+                  />
+                }
               />
-            }
-          />
-          <Route
-            path="/albums"
-            element={
-              <Albums
-                artistAlbum={albums}
-                songsId={albumId}
-                details={artistDetails}
-                sendDataToApp={getDataFromAlbums}
+              <Route
+                path="/albums"
+                element={
+                  <Albums
+                    artistAlbum={albums}
+                    songsId={albumId}
+                    details={artistDetails}
+                    sendDataToApp={getDataFromAlbums}
+                  />
+                }
               />
-            }
-          />
-          <Route
-            path="/tracks"
-            element={
-              <Tracks
-                albumSongs={songs}
-                albumSongLength={songsLength}
-                songPreview={previewSong}
-                songArt={albumArt}
-                albumCopyright={copyright}
-                songName={albumName}
-                songs={noOfTracks}
-                albumLength={totalAlbumLength}
-                albumDate={albumDate}
+              <Route
+                path="/tracks"
+                element={
+                  <Tracks
+                    albumSongs={songs}
+                    albumSongLength={songsLength}
+                    songPreview={previewSong}
+                    songArt={albumArt}
+                    albumCopyright={copyright}
+                    songName={albumName}
+                    songs={noOfTracks}
+                    albumLength={totalAlbumLength}
+                    albumDate={albumDate}
+                  />
+                }
               />
-            }
-          />
-        </Routes>
+            </Route>
+          </Routes>
+        </AuthProvider>
       </Router>
     </React.Fragment>
   );
