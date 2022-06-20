@@ -148,3 +148,21 @@ body {
 .power:hover {
   opacity: 1;
 }
+
+@media screen and (max-width: 1361px) {
+  .output {
+    // border: 0.1px solid orange;
+    padding: 30px 30px 0 30px;
+    margin: 0 0 30px 0;
+    display: flex;
+    width: fit-content;
+  }
+
+  .searchBar {
+    margin-left: 100px;
+  }
+
+  .power {
+    margin-left: 1200px;
+  }
+}
